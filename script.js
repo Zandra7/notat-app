@@ -22,10 +22,11 @@ function saveNote() {
         console.error('Error:', error);
     });
 
-    // save title of note as a list item
+    // Lager et nytt li-element og legger det til i listen
     const ul = document.getElementById('prev-notes');
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(title));
+    li.classList.add('note')
     ul.appendChild(li);
 }
  
