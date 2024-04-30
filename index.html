@@ -13,20 +13,27 @@
         <main>
             <div class="title">
                 <p>Title</p>
-                <input type="text">
+                <input type="text" name="title" id="title">
             </div>
             <div class="content">
                 <p>Content</p>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
             </div>
-            <button>Save</button>
+            <div class="tags">
+                <p>Tags</p>
+                <input type="text" name="tags" id="tags">
+                <p class="current-tags"></p>
+            </div>
+            <button type="button" onclick="saveNote()">Save</button>
         </main>
         <footer>
             <h2>Previous Notes</h2>
             <ul>
-                <!-- Her skal notatene legges -->
+                <!-- Her kommer notatene -->
             </ul>
+        </footer>
     </div>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </body>
 </html>
