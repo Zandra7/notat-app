@@ -23,7 +23,7 @@ app.get('/', function(request, response){
 
 app.post('/add-note', (request, response) => {
     const { title, content, tags } = request.body;
-    const created = new Date().toISOString();
+    const created = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
     const sql = `INSERT INTO Notes (title, content, tags, created, changed) VALUES (?, ?, ?, ?, ?)`;
 
     database.run(sql, [title, content, tags, created, created], function(error) {
