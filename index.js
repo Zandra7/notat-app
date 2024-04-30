@@ -3,7 +3,7 @@ const pathModul = require('path')
 const sqliteModul = require('sqlite3').verbose()
 
 const app = expressModul()
-const portNummer = 3000 // portnummeret serveren skal kjøre på
+const port = 3000 // portnummeret serveren skal kjøre på
 
 app.use(expressModul.json()) // tolke forespørsler som json
 app.use(expressModul.static(__dirname)) // hoste static filer
@@ -20,3 +20,21 @@ let database = new sqliteModul.Database("database.db", function(error){
 app.get('/', function(request, response){
     response.sendFile(path.join(__dirname, 'index.html')) // sender deg til index.html
 })
+
+app.post('/add-note', (request, response) => {
+    const { title, content, tags } = request.body;
+    const created = new Date().toISOString();
+    const sql = `INSERT INTO Notes (title, content, tags, created, changed) VALUES (?, ?, ?, ?, ?)`;
+
+    database.run(sql, [title, content, tags, created, created], function(error) {
+        if (error) {
+            res.status(500).json({ error: error.message });
+            return;
+        }
+        response.json({ message: 'Notat lagt til i databasen' });
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server kjører på port ${port}`);
+});
