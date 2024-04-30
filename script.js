@@ -21,4 +21,11 @@ function saveNote() {
     .catch((error) => {
         console.error('Error:', error);
     });
+
+    // save title of note as a list item
+    const ul = document.getElementById('prev-notes');
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(title));
+    ul.appendChild(li);
 }
+ 
