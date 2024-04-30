@@ -4,6 +4,10 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.main {
+    margin: 50px 50px;
+}
+
 button {
     background-color: rgb(240, 240, 240);
     padding: 14px 20px;
