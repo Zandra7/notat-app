@@ -23,7 +23,7 @@ function saveNote() {
     });
 
     // Lager et nytt li-element og legger det til i listen
-    const ul = document.getElementById('prev-notes');
+    const ul = document.getElementById('prev-note');
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(title));
     li.classList.add('note')
