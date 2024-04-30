@@ -12,7 +12,6 @@ button {
     background-color: rgb(240, 240, 240);
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
     cursor: pointer;
     border: 1px solid rgb(217, 217, 217);
     border-radius: 3px;
@@ -33,4 +32,22 @@ input {
 
 p {
     margin-top: 10px;
+}
+
+#prev-notes {
+    display: flex;
+    margin-left: 10px;
+    gap: 10px;
+}
+.prev-note {
+    list-style: none;
+    width: fit-content;
+    padding: 14px 20px;
+    border: 1px solid rgb(217, 217, 217);
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 14px;
+}
+.prev-note:hover {
+    background-color: rgb(240, 240, 240);
 }
