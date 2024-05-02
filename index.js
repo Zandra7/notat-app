@@ -36,6 +36,19 @@ app.post('/add-note', (request, response) => {
     });
 });
 
+// hente notater fra databasen
+app.get('/get-notes', (request, response) => {
+    const sql = `SELECT * FROM Notes`;
+
+    database.all(sql, [], (error, rows) => {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+        response.json(rows);
+    });
+});
+
 app.listen(port, () => {
-    console.log(`Server kjører på port ${port}`);
+    console.log(`Server kjører på http://localhost:${port}`);
 });
