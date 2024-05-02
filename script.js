@@ -1,3 +1,5 @@
+let allNotes = [];
+
 function saveNote() {
     if (document.getElementById('title').value === '' || document.getElementById('content').value === '') {
         alert('Title and content must be filled out');
@@ -21,6 +23,9 @@ function saveNote() {
             document.getElementById('title').value = '';
             document.getElementById('content').value = '';
             document.getElementById('tags').value = '';
+
+            // Legger til notatet i allNotes for å slippe å hente ut fra databasen
+            allNotes.push({ Title: title, Content: content, Tags: tags });
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -35,28 +40,15 @@ function saveNote() {
 
         // klikke på li for å vise notatet i input-feltene fra databasen
         li.onclick = function() {
-            fetch('/get-notes', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                const note = data.find(note => note.Title === title);
-                console.log('Note:', note);
-                if (note) {
-                    document.getElementById('title').value = note.Title;
-                    document.getElementById('content').value = note.Content;
-                    document.getElementById('tags').value = note.Tags;
-                } else {
-                    console.log('No note found with title:', title);
-                }
-            })
-            .catch((error) => {
-                console.error('Error accessing notes:', error);
-            });
+            const note = allNotes.find(note => note.Title === title);
+            console.log('Note:', note);
+            if (note) {
+                document.getElementById('title').value = note.Title;
+                document.getElementById('content').value = note.Content;
+                document.getElementById('tags').value = note.Tags;
+            } else {
+                console.log('No note found with title:', title);
+            }
         }
     }
 }
@@ -78,3 +70,28 @@ function exportNote() {
     a.download = filename;
     a.click();
 }
+
+// Henter alle notater fra databasen og lister dem opp under prev-notes
+fetch('/get-notes', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+.then(response => response.json())
+.then(data => {
+    allNotes = data;
+    console.log('All notes:', allNotes);
+    const ul = document.getElementById('prev-notes');
+    allNotes.forEach(note => {
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(note.Title));
+        li.classList.add('prev-note')
+        ul.appendChild(li);
+        li.onclick = function() {
+            document.getElementById('title').value = note.Title;
+            document.getElementById('content').value = note.Content;
+            document.getElementById('tags').value = note.Tags;
+        }
+    });
+})
