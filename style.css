@@ -38,6 +38,7 @@ p {
     display: flex;
     margin-left: 10px;
     gap: 10px;
+    flex-wrap: wrap;
 }
 .prev-note {
     list-style: none;

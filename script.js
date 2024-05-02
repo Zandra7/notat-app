@@ -102,6 +102,27 @@ function loadNoteDetails(id) {
         .catch((error) => {
             console.error('Error fetching note details:', error);
         });
+=======
+        // Lager et nytt li-element og legger det til i listen
+        const ul = document.getElementById('prev-notes');
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(title));
+        li.classList.add('prev-note')
+        ul.appendChild(li);
+
+        // klikke på li for å vise notatet i input-feltene fra databasen
+        li.onclick = function() {
+            const note = allNotes.find(note => note.Title === title);
+            console.log('Note:', note);
+            if (note) {
+                document.getElementById('title').value = note.Title;
+                document.getElementById('content').value = note.Content;
+                document.getElementById('tags').value = note.Tags;
+            } else {
+                console.log('No note found with title:', title);
+            }
+        }
+    }
 }
 
 // Lagre notatet som en JSON-fil
