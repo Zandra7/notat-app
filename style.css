@@ -51,3 +51,21 @@ p {
 .prev-note:hover {
     background-color: rgb(240, 240, 240);
 }
+
+.tags ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tags li {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.tags li span {
+    margin-left: 5px;
+    cursor: pointer;
+}
