@@ -31,6 +31,7 @@ function saveNote() {
         const li = document.createElement('li');
         li.appendChild(document.createTextNode(title));
         li.classList.add('prev-note')
+        ul.appendChild(li);
 
         // klikke på li for å vise notatet i input-feltene fra databasen
         li.onclick = function() {
@@ -43,12 +44,12 @@ function saveNote() {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                const note = data.find(note => note.title === title);
+                const note = data.find(note => note.Title === title);
                 console.log('Note:', note);
                 if (note) {
-                    document.getElementById('title').value = note.title;
-                    document.getElementById('content').value = note.content;
-                    document.getElementById('tags').value = note.tags;
+                    document.getElementById('title').value = note.Title;
+                    document.getElementById('content').value = note.Content;
+                    document.getElementById('tags').value = note.Tags;
                 } else {
                     console.log('No note found with title:', title);
                 }
@@ -57,8 +58,6 @@ function saveNote() {
                 console.error('Error accessing notes:', error);
             });
         }
-
-        ul.appendChild(li);
     }
 }
 
