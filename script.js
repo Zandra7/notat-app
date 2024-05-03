@@ -1,5 +1,12 @@
 let allNotes = [];
 
+function addTagOnEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        console.log('Enter pressed');
+    }
+}
+
 function saveNote() {
     if (document.getElementById('title').value === '' || document.getElementById('content').value === '') {
         alert('Title and content must be filled out');

@@ -21,7 +21,7 @@
             </div>
             <div class="tags">
                 <p>Tags</p>
-                <input type="text" name="tags" id="tags">
+                <input type="text" name="tags" id="tags" onkeydown="addTagOnEnter(event)">
                 <ul id="current-tags"></ul>
             </div>
             <button onclick="saveNote()">Save</button>
