@@ -52,3 +52,24 @@ p {
 .prev-note:hover {
     background-color: rgb(240, 240, 240);
 }
+
+#current-tags {
+    display: flex;
+    width: 500px;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#current-tags li {
+    list-style: none;
+    border: 1px solid rgb(217, 217, 217);
+    border-radius: 3px;
+    padding: 5px;
+}
+
+/* 'x' man kan klikke på for å fjerne tag */
+.tags li span {
+    margin-left: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}

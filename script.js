@@ -4,6 +4,25 @@ function addTagOnEnter(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
         console.log('Enter pressed');
+        addTag();
+    }
+}
+
+function addTag() {
+    const tagInput = document.getElementById('tags');
+    const currentTags = document.getElementById('current-tags');
+    const tag = tagInput.value.trim();
+    if (tag) {
+        const li = document.createElement('li');
+        li.textContent = tag;
+        const span = document.createElement('span');
+        span.textContent = 'x';
+        span.onclick = function () {
+            currentTags.removeChild(li);
+        };
+        li.appendChild(span);
+        currentTags.appendChild(li);
+        tagInput.value = '';
     }
 }
 
