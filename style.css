@@ -67,6 +67,10 @@ p {
     padding: 5px;
 }
 
+#tags {
+    margin-bottom: 3px;
+}
+
 /* 'x' man kan klikke på for å fjerne tag */
 .tags li span {
     margin-left: 5px;
