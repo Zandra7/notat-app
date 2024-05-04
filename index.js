@@ -21,7 +21,7 @@ app.get('/', function(request, response){
     response.sendFile(path.join(__dirname, 'index.html')) // sender deg til index.html
 })
 
-app.post('/add-note', (request, response) => {
+app.post('/insert-note', (request, response) => {
     const { title, content, tags } = request.body;
     const created = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
     let changed = created;
@@ -35,6 +35,20 @@ app.post('/add-note', (request, response) => {
         response.json({ message: 'Notat lagt til i databasen' });
     });
 });
+
+app.put('/update-note', (request, response) => {
+    const { title, content, tags } = request.body;
+    const changed = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
+    const sql = `UPDATE Notes SET content = ?, tags = ?, changed = ? WHERE title = ?`;
+
+    database.run(sql, [content, tags, changed, title], function(error) {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+        response.json({ message: 'Notat oppdatert' });
+    });
+})
 
 // hente notater fra databasen
 app.get('/get-notes', (request, response) => {

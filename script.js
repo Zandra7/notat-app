@@ -28,56 +28,95 @@ function addTag() {
     }
 }
 
+function insertNote() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    // Lager en string av tags separert med semikolon
+    const tags = Array.from(document.getElementById('current-tags').children).map(li => li.getAttribute('data-tag')).join(';');
+    console.log('tags:', tags);
+    fetch('/insert-note', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, tags })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        // Tømmer input-feltene og tag-listen
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+        document.getElementById('tags').value = '';
+        document.getElementById('current-tags').innerHTML = '';
+        // Legger til notatet i allNotes for å slippe å hente ut fra databasen
+        allNotes.push({ Title: title, Content: content, Tags: tags });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    // Lager et nytt li-element og legger det til i listen
+    const ul = document.getElementById('prev-notes');
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(title));
+    li.classList.add('prev-note')
+    ul.appendChild(li);
+    // Klikke på li for å vise notatet i input-feltene fra databasen
+    li.onclick = function() {
+        const note = allNotes.find(note => note.Title === title);
+        console.log('Note:', note);
+        if (note) {
+            showNote(note);
+        } else {
+            console.log('No note found with title:', title);
+        }
+    }
+}
+
+function updateNote() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const tags = Array.from(document.getElementById('current-tags').children).map(li => li.getAttribute('data-tag')).join(';');
+    fetch('/update-note', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, tags })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        // Tømmer input-feltene og tag-listen
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+        document.getElementById('tags').value = '';
+        document.getElementById('current-tags').innerHTML = '';
+        // Oppdaterer notatet i allNotes
+        const note = allNotes.find(note => note.Title === title);
+        if (note) {
+            note.Content = content;
+            note.Tags = tags;
+        } else {
+            console.log('No note found with title:', title);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 function saveNote() {
     if (document.getElementById('title').value === '' || document.getElementById('content').value === '') {
         alert('Title and content must be filled out');
         return;
-    } else {
-        const title = document.getElementById('title').value;
-        const content = document.getElementById('content').value;
-        // Lager en string av tags separert med semikolon
-        const tags = Array.from(document.getElementById('current-tags').children).map(li => li.getAttribute('data-tag')).join(';');
-        console.log('tags:', tags);
-
-        fetch('/add-note', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ title, content, tags })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Tømmer input-feltene og tag-listen
-            document.getElementById('title').value = '';
-            document.getElementById('content').value = '';
-            document.getElementById('tags').value = '';
-            document.getElementById('current-tags').innerHTML = '';
-
-            // Legger til notatet i allNotes for å slippe å hente ut fra databasen
-            allNotes.push({ Title: title, Content: content, Tags: tags });
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-
-        // Lager et nytt li-element og legger det til i listen
-        const ul = document.getElementById('prev-notes');
-        const li = document.createElement('li');
-        li.appendChild(document.createTextNode(title));
-        li.classList.add('prev-note')
-        ul.appendChild(li);
-
-        // Klikke på li for å vise notatet i input-feltene fra databasen
-        li.onclick = function() {
-            const note = allNotes.find(note => note.Title === title);
-            console.log('Note:', note);
-            if (note) {
-                showNote(note);
-            } else {
-                console.log('No note found with title:', title);
-            }
+    } else {  
+        if (allNotes.some(note => note.Title === document.getElementById('title').value)) {
+            console.log('Note already exists, updating');
+            updateNote();
+        } else {
+            console.log('Note does not exist, inserting');
+            insertNote(); 
         }
     }
 }
