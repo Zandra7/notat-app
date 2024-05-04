@@ -124,7 +124,7 @@ function saveNote() {
 function showNote(note) {
     document.getElementById('title').value = note.Title;
     document.getElementById('content').value = note.Content;
-    const tags = note.Tags.split(';');
+    const tags = String(note.Tags).split(';');
     const currentTags = document.getElementById('current-tags');
     currentTags.innerHTML = '';
     tags.forEach(tag => {
@@ -163,20 +163,63 @@ fetch('/get-notes', {
     });
 })
 
-// Lagre notatet som en JSON-fil
+// Lagre notatet som en JSON-fil med tags i 'current-tags'
 function exportNote() {
     const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
-    const tags = document.getElementById('tags').value;
-    const created = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
-    const changed = created;
-    const note = { title, content, tags, created, changed };
-    const data = JSON.stringify(note);
-    const filename = title + '.json';
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href= url;
-    a.download = filename;
-    a.click();
+    const note = allNotes.find(note => note.Title === title);
+    if (note) {
+        const data = JSON.stringify(note);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${title}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    } else {
+        console.log('No note found with title:', title);
+    }
+}
+
+// Importere notatet fra en JSON-fil
+function importNote() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        let importedNote;
+        reader.onload = function(event) {
+            importedNote = JSON.parse(event.target.result);
+
+            fetch('/import-note', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({title:importedNote.Title, content:importedNote.Content, tags:importedNote.Tags, created:importedNote.Created, changed:importedNote.Changed})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Legger til notatet i allNotes for å slippe å hente ut fra databasen
+                allNotes.push(importedNote);
+                // Lager et nytt li-element og legger det til i listen
+                const ul = document.getElementById('prev-notes');
+                const li = document.createElement('li');
+                li.appendChild(document.createTextNode(importedNote.Title));
+                li.classList.add('prev-note')
+                ul.appendChild(li);
+                // Klikke på li for å vise notatet i input-feltene fra databasen
+                li.onclick = showNote.bind(null, importedNote);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        }
+        reader.readAsText(file);
+    }
+    input.click();
 }

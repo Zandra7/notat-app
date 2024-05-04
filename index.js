@@ -63,6 +63,20 @@ app.get('/get-notes', (request, response) => {
     });
 });
 
+app.post('/import-note', (request, response) => {
+    const { title, content, tags, created, changed } = request.body;
+    const sql = `INSERT INTO Notes (title, content, tags, created, changed) VALUES (?, ?, ?, ?, ?)`;
+
+    database.run(sql, [title, content, tags, created, changed], function(error) {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+        response.json({ message: 'Notat lagt til i databasen' });
+    });
+
+})
+
 app.listen(port, () => {
     console.log(`Server kjører på http://localhost:${port}`);
 });
