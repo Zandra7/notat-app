@@ -11,8 +11,12 @@ function addTagOnEnter(event) {
 function addTag() {
     const tagInput = document.getElementById('tags');
     const currentTags = document.getElementById('current-tags');
-    const tag = tagInput.value.trim();
+    let tag = tagInput.value.trim();
     if (tag) {
+        // Legg til # prefix hvis brukeren ikke har gjort det
+        if (!tag.startsWith('#')) {
+            tag = '#' + tag;
+        }
         const li = document.createElement('li');
         li.textContent = tag;
         // Lagrer taggen i en data-atributt for å ikke få med 'x'
