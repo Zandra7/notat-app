@@ -193,6 +193,11 @@ function importNote() {
         reader.onload = function(event) {
             importedNote = JSON.parse(event.target.result);
 
+            if (allNotes.some(note => note.Title === importedNote.Title)) {
+                alert('Note with title, ' + importedNote.Title + ', already exists');
+                return;
+            }
+
             fetch('/import-note', {
                 method: 'POST',
                 headers: {
