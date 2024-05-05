@@ -34,6 +34,15 @@ p {
     margin-top: 10px;
 }
 
+.prev-notes-filter  {
+    display: flex;
+    margin-bottom: 7px;
+}
+
+.prev-notes-filter input {
+    padding: 10px;
+}
+
 #prev-notes {
     display: flex;
     margin-left: 10px;

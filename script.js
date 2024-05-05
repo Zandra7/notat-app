@@ -142,27 +142,6 @@ function showNote(note) {
     });
 }
 
-// Henter alle notater fra databasen og lister dem opp under prev-notes
-fetch('/get-notes', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
-.then(response => response.json())
-.then(data => {
-    allNotes = data;
-    console.log('All notes:', allNotes);
-    const ul = document.getElementById('prev-notes');
-    allNotes.forEach(note => {
-        const li = document.createElement('li');
-        li.appendChild(document.createTextNode(note.Title));
-        li.classList.add('prev-note')
-        ul.appendChild(li);
-        li.onclick = showNote.bind(null, note);
-    });
-})
-
 // Lagre notatet som en JSON-fil med tags i 'current-tags'
 function exportNote() {
     const title = document.getElementById('title').value;
@@ -228,3 +207,48 @@ function importNote() {
     }
     input.click();
 }
+
+// Når enter klikkes i 'filter-tags' input-feltet
+function filterTags(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        console.log('Enter pressed');
+        showNotes(document.getElementById('filter-tags').value);
+    }
+}
+
+function showNotes(filter) {
+    // split filter string into array of tags
+    filter = filter.split(' ');
+    const ul = document.getElementById('prev-notes');
+    ul.innerHTML = '';
+    allNotes.forEach(note => {
+        let matchCount = 0;
+        for (let i = 0; i < filter.length; i++) {
+            if (note.Tags.includes(filter[i])) {
+                matchCount++;
+            }
+        }
+        if (matchCount === filter.length) {
+            const li = document.createElement('li');
+            li.appendChild(document.createTextNode(note.Title));
+            li.classList.add('prev-note')
+            ul.appendChild(li);
+            li.onclick = showNote.bind(null, note);
+        }
+    });
+}
+
+// Henter alle notater fra databasen og lister dem opp under prev-notes
+fetch('/get-notes', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+.then(response => response.json())
+.then(data => {
+    allNotes = data;
+    console.log('All notes:', allNotes);
+    showNotes('');
+});

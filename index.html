@@ -29,7 +29,10 @@
             <button onclick="importNote()">Import</button>
         </main>
         <footer>
-            <h2>Previous Notes</h2>
+            <div class="prev-notes-filter">
+                <h2>Previous Notes</h2>
+                <input type="text" placeholder="Filter" id="filter-tags" onkeydown="filterTags(event)">
+            </div>
             <ul id="prev-notes">
                 <!-- Her kommer notatene -->
             </ul>
