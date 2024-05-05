@@ -53,8 +53,15 @@ function insertNote() {
         document.getElementById('content').value = '';
         document.getElementById('tags').value = '';
         document.getElementById('current-tags').innerHTML = '';
+        document.getElementById('date').style.display = 'none';
         // Legger til notatet i allNotes for å slippe å hente ut fra databasen
-        allNotes.push({ Title: title, Content: content, Tags: tags });
+       let now = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
+       allNotes.push({ 
+            Title: title, 
+            Content: content, 
+            Tags: tags, 
+            Created: now, 
+            Changed: now});
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -96,11 +103,14 @@ function updateNote() {
         document.getElementById('content').value = '';
         document.getElementById('tags').value = '';
         document.getElementById('current-tags').innerHTML = '';
+        document.getElementById('date').style.display = 'none';
         // Oppdaterer notatet i allNotes
         const note = allNotes.find(note => note.Title === title);
         if (note) {
+            let now = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
             note.Content = content;
             note.Tags = tags;
+            note.Changed = now;
         } else {
             console.log('No note found with title:', title);
         }
@@ -114,7 +124,7 @@ function saveNote() {
     if (document.getElementById('title').value === '' || document.getElementById('content').value === '') {
         alert('Title and content must be filled out');
         return;
-    } else {  
+    } else {
         if (allNotes.some(note => note.Title === document.getElementById('title').value)) {
             console.log('Note already exists, updating');
             updateNote();
@@ -128,6 +138,17 @@ function saveNote() {
 function showNote(note) {
     document.getElementById('title').value = note.Title;
     document.getElementById('content').value = note.Content;
+
+    document.getElementById('date').style.display = 'block';
+    document.getElementById('created').innerHTML = note.Created;
+    document.getElementById('modified').innerHTML = note.Changed;
+
+    if (note.Created === note.Changed) {
+        document.getElementById('modified-info').style.display = 'none';
+    } else {
+        document.getElementById('modified-info').style.display = 'block';
+    }
+
     const tags = String(note.Tags).split(';');
     const currentTags = document.getElementById('current-tags');
     currentTags.innerHTML = '';
@@ -243,6 +264,7 @@ function showNotes(filter) {
     });
 }
 
+document.getElementById('date').style.display = 'none';
 // Henter alle notater fra databasen og lister dem opp under prev-notes
 fetch('/get-notes', {
     method: 'GET',
