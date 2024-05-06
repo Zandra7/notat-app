@@ -9,7 +9,7 @@ app.use(expressModul.json()) // tolke forespørsler som json
 app.use(expressModul.static(__dirname)) // hoste static filer
 
 // hente database
-let database = new sqliteModul.Database("db.db", function(error){
+let database = new sqliteModul.Database("database.db", function(error){
     if(error){
         console.error(error.message) // viser error om det er noe galt
     } else {
