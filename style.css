@@ -17,10 +17,6 @@ button {
     border-radius: 3px;
 }
 
-main, h2 {
-    margin-inline: 10px;
-}
-
 h2 {
     font-weight: lighter;
     margin-block: 10px;
@@ -33,6 +29,7 @@ h2 {
 
 input, textarea{
     padding: 5px;
+    width: 250px;
 }
 
 p {
@@ -48,12 +45,12 @@ p {
 }
 
 .prev-notes-filter  {
-    display: flex;
     margin-bottom: 7px;
 }
 
 .prev-notes-filter input {
-    padding: 10px;
+    height: 16.5px;
+    padding-block: 5px;
 }
 
 #prev-notes {
