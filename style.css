@@ -26,12 +26,25 @@ h2 {
     margin-block: 10px;
 }
 
+#date {
+    color: rgb(100, 100, 100);
+    font-size: 12px;
+}
+
 input, textarea{
     padding: 5px;
 }
 
 p {
     margin-top: 10px;
+}
+
+.save-btn {
+    background-color: rgb(141, 232, 203);
+    border: rgb(129, 215, 188);
+}
+.save-btn:hover {
+    background-color: rgb(129, 215, 188);
 }
 
 .prev-notes-filter  {
