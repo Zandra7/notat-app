@@ -96,3 +96,12 @@ button {
     cursor: pointer;
     font-weight: bold;
 }
+
+.enter {
+    display: flex;
+}
+
+.enter p {
+    margin: auto 5px;
+    color: rgb(100, 100, 100);
+}

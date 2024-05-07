@@ -25,7 +25,10 @@
             </div>
             <div class="tags">
                 <p>Tags</p>
-                <input type="text" name="tags" id="tags" onkeydown="addTagOnEnter(event)">
+                <div class="enter">
+                    <input type="text" name="tags" id="tags" onkeydown="addTagOnEnter(event)">
+                    <p><i>'Enter'</i> to add tag to note</p>
+                </div>
                 <ul id="current-tags"></ul>
             </div>
             <button class="save-btn" onclick="saveNote()">Save</button>
@@ -34,7 +37,10 @@
 
             <div class="prev-notes-filter">
                 <h2>Previous Notes</h2>
-                <input type="text" placeholder="Filter" id="filter-tags" onkeydown="filterTags(event)">
+                <div class="enter">
+                    <input type="text" placeholder="Filter" id="filter-tags" onkeydown="filterTags(event)">
+                    <p><i>'Enter'</i> to select filter</p>
+                </div>
             </div>
             <ul id="prev-notes">
                 <!-- Her kommer notatene -->
