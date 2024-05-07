@@ -8,15 +8,6 @@
     margin: 50px 50px;
 }
 
-button {
-    background-color: rgb(240, 240, 240);
-    padding: 14px 20px;
-    margin: 8px 0;
-    cursor: pointer;
-    border: 1px solid rgb(217, 217, 217);
-    border-radius: 3px;
-}
-
 h2 {
     font-weight: lighter;
     margin-block: 10px;
@@ -36,9 +27,19 @@ p {
     margin-top: 10px;
 }
 
+button {
+    background-color: rgb(240, 240, 240);
+    padding: 10px 16px;
+    margin: 8px 0;
+    cursor: pointer;
+    border: 1px solid rgb(217, 217, 217);
+    border-radius: 3px;
+}
+
 .save-btn {
     background-color: rgb(141, 232, 203);
     border: rgb(129, 215, 188);
+    padding: 10px 40px;
 }
 .save-btn:hover {
     background-color: rgb(129, 215, 188);
@@ -55,7 +56,6 @@ p {
 
 #prev-notes {
     display: flex;
-    margin-left: 10px;
     gap: 10px;
     flex-wrap: wrap;
 }
