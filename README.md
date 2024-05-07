@@ -14,6 +14,8 @@ På hvert notat kan du se:
 
 Appen fungerer uten internett.
 
+![Notat-app](assets/notat-app.jpg)
+
 ## Hovedfunksjoner
 
 - **Opprettelse av notat:** For å opprette et notat, må du fylle inn feltene for 'title' og 'content'.
