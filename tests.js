@@ -1,4 +1,4 @@
-const backend = require('./index.js')
+const backend = require('./backend.js')
 
 // kaller på insert_note funksjonen for å teste å sette inn et notat
 backend.insert_note({

@@ -4,7 +4,7 @@
     "sqlite3": "^5.1.7"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node backend.js",
     "test": "node tests.js"
   }
 }
