@@ -32,23 +32,27 @@ Appen fungerer uten internett.
 
 ## Installasjonsveiledning
 
-**1. Klon Repositoriet:** Start med å klone repositoriet til din lokale maskin.
+**1. Klon repositoriet:** Start med å klone repositoriet til din lokale maskin.
 
-**2. Installer Avhengigheter:** Naviger til prosjektmappen i terminalen og kjør linjene under for å installere avhengigheter.
+**2. Installer avhengigheter:** Naviger til prosjektmappen i terminalen og kjør kommandoen under for å installere avhengigheter.
 
-    npm install
+```
+npm install
+```
 
----
+**3. Start serveren:** Kjør kommandoen under for å starte serveren. Serveren vil kjøre på port 3000, slik at du kan få tilgang til appen via `http://localhost:3000` i nettleseren.
 
-    npm install express
+```
+npm run start
+```
 
----
+## Enhetstesting
 
-    npm install sqlite3
+Noen enkle backend-tester kan kjøres med følgende kommando.
 
-**3. Start Serveren:** Kjør kommandoen under for å starte serveren. Serveren vil kjøre på port 3000, slik at du kan få tilgang til appen via `http://localhost:3000` i nettleseren.
-
-    node index.js
+```
+npm run test
+```
 
 ### Eksterne filer
 
