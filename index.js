@@ -5,6 +5,41 @@ const sqliteModul = require('sqlite3').verbose()
 const app = expressModul()
 const port = 3000 // portnummeret serveren skal kjøre på
 
+
+// legger til nytt notat i databasen
+function insert_note(request, response) {
+    const { title, content, tags } = request.body;
+    const created = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
+    let changed = created;
+    const sql = `INSERT INTO Notes (title, content, tags, created, changed) VALUES (?, ?, ?, ?, ?)`;
+
+    database.run(sql, [title, content, tags, created, changed], function(error) {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+        response.json({ message: 'Notat lagt til i databasen' });
+    });
+}
+
+// oppdaterer eksisterende notat i databasen
+function update_note(request, response) {
+    const { title, content, tags } = request.body;
+    const changed = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
+    const sql = `UPDATE Notes SET content = ?, tags = ?, changed = ? WHERE title = ?`;
+
+    database.run(sql, [content, tags, changed, title], function(error) {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+        response.json({ message: 'Notat oppdatert' });
+    });
+}
+
+// eksporterer funksjonene slik at de kan testes
+module.exports = { insert_note, update_note };
+
 app.use(expressModul.json()) // tolke forespørsler som json
 app.use(expressModul.static(__dirname)) // hoste static filer
 
@@ -21,34 +56,9 @@ app.get('/', function(request, response){
     response.sendFile(path.join(__dirname, 'index.html')) // sender deg til index.html
 })
 
-app.post('/insert-note', (request, response) => {
-    const { title, content, tags } = request.body;
-    const created = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
-    let changed = created;
-    const sql = `INSERT INTO Notes (title, content, tags, created, changed) VALUES (?, ?, ?, ?, ?)`;
+app.post('/insert-note', insert_note);
 
-    database.run(sql, [title, content, tags, created, changed], function(error) {
-        if (error) {
-            response.status(500).json({ error: error.message });
-            return;
-        }
-        response.json({ message: 'Notat lagt til i databasen' });
-    });
-});
-
-app.put('/update-note', (request, response) => {
-    const { title, content, tags } = request.body;
-    const changed = new Date().toLocaleString('no-NB', { timeZone: 'Europe/Oslo' });
-    const sql = `UPDATE Notes SET content = ?, tags = ?, changed = ? WHERE title = ?`;
-
-    database.run(sql, [content, tags, changed, title], function(error) {
-        if (error) {
-            response.status(500).json({ error: error.message });
-            return;
-        }
-        response.json({ message: 'Notat oppdatert' });
-    });
-})
+app.put('/update-note', update_note);
 
 // hente notater fra databasen
 app.get('/get-notes', (request, response) => {
@@ -77,6 +87,8 @@ app.post('/import-note', (request, response) => {
 
 })
 
-app.listen(port, () => {
-    console.log(`Server kjører på http://localhost:${port}`);
-});
+if (require.main === module) {   
+    app.listen(port, () => {
+        console.log(`Server kjører på http://localhost:${port}`);
+    });
+}
